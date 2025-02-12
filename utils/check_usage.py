@@ -42,13 +42,13 @@ async def check_ip_used() -> dict:
         if ips
     ]
     logger.info("Number of all active ips: %s", str(total_ips))
-    messages.append(f"---------\nCount Of All Active IPs: <b>{total_ips}</b>")
+    messages.append(f"---------\nCount Of All Active IPs (Alim): <b>{total_ips}</b>")
     messages.append("<code>github.com/houshmand-2005/V2IpLimit/</code>")
     shorter_messages = [
         "\n".join(messages[i : i + 100]) for i in range(0, len(messages), 100)
     ]
-    # for message in shorter_messages:
-        # await send_logs(message)
+    for message in shorter_messages:
+        await send_logs(message)
     return all_users_log
 
 
