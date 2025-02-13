@@ -33,7 +33,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: v2iplimit_amd64_linux.bin
-          # path: dist/v2iplimit.bin
+          path: dist/v2iplimit_amd64_linux.bin
 
   # build-windows:
     # runs-on: windows-latest
