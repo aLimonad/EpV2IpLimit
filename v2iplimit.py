@@ -65,6 +65,8 @@ async def main():
         config_file["PANEL_USERNAME"],
         config_file["PANEL_PASSWORD"],
         config_file["PANEL_DOMAIN"],
+        None,
+        config_file["PANEL_NOTIFY_POINT"]
     )
     dis_users = await dis_obj.read_and_clear_users()
     await enable_selected_users(panel_data, dis_users)

@@ -59,7 +59,8 @@ from utils.read_config import read_config
     GET_GENERAL_LIMIT_NUMBER,
     GET_CHECK_INTERVAL,
     GET_TIME_TO_ACTIVE_USERS,
-) = range(15)
+    GET_NOTIFY_POINT
+) = range(16)
 
 data = asyncio.run(read_config())
 try:
@@ -247,6 +248,7 @@ async def create_config(update: Update, _context: ContextTypes.DEFAULT_TYPE):
         domain = json_data.get("PANEL_DOMAIN")
         username = json_data.get("PANEL_USERNAME")
         password = json_data.get("PANEL_PASSWORD")
+        notify_point = json_data.get("PANEL_NOTIFY_POINT")
         if domain and username and password:
             await update.message.reply_html(text="You set configuration before!")
             await update.message.reply_html(
@@ -258,6 +260,7 @@ async def create_config(update: Update, _context: ContextTypes.DEFAULT_TYPE):
                 + f"Domain: <code>{domain}</code>\n"
                 + f"Username: <code>{username}</code>\n"
                 + f"Password: <code>{password}</code>\n"
+                + f"NotifyPoint: <code>{notify_point}</code>\n"
                 + "Do you want to change these settings? <code>(yes/no)</code>"
             )
             return GET_CONFIRMATION
@@ -294,10 +297,21 @@ async def get_domain(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     context.user_data["domain"] = update.message.text.strip()
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
+        text="Send Your Notify Point: (For example: <code>https://sub.domain.com/notify</code>)",
+    )
+    return GET_NOTIFY_POINT
+
+async def get_notify_point(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Get notify point"""
+
+    if update.message.text is not None or update.message.text != "":
+        context.user_data["notify_point"] = update.message.text.strip()
+
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
         text="Send Your Username: (For example: 'admin')",
     )
     return GET_USERNAME
-
 
 async def get_username(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Get panel username form user"""
@@ -321,6 +335,7 @@ async def get_password(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
             context.user_data["domain"],
             context.user_data["password"],
             context.user_data["username"],
+            context.user_data["notify_point"],
         )
         await context.bot.send_message(
             chat_id=update.effective_chat.id, text="Config saved successfully 🎊"
@@ -333,6 +348,7 @@ async def get_password(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
             + f"Panel Address: <code>{context.user_data['domain']}</code>\n"
             + f"Username: <code>{context.user_data['username']}</code>\n"
             + f"Password: <code>{context.user_data['password']}</code>\n"
+            + f"NotifyPoint: <code>{context.user_data["notify_point"]}</code>\n"
             + "--------\n"
             + "Try again /create_config",
         )
