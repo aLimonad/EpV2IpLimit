@@ -37,13 +37,13 @@ async def check_ip_used() -> dict:
         )
     )
     messages = [
-        f"<code>{email}</code> имеет <code>{len(ips)}</code> активных ip  \n- "
+        f"<code>{email}</code> with <code>{len(ips)}</code> active ip  \n- "
         + "\n- ".join(ips)
         for email, ips in all_users_log.items()
         if ips
     ]
     logger.info("Number of all active ips: %s", str(total_ips))
-    messages.append(f"---------\nОбщее количество активных IP: <b>{total_ips}</b>")
+    messages.append(f"---------\nCount Of All Active IPs (Alim): <b>{total_ips}</b>")
     messages.append("<code>ElbrusProxy corp.</code>")
     shorter_messages = [
         "\n".join(messages[i : i + 100]) for i in range(0, len(messages), 100)
@@ -67,8 +67,8 @@ async def check_users_usage(panel_data: PanelType):
             user_limit_number = int(special_limit.get(user_name, limit_number))
             if len(set(user_ip)) > user_limit_number:
                 message = (
-                    f"Пользователь {user_name} имеет {str(len(set(user_ip)))}"
-                    + f" активных ips. {str(set(user_ip))}"
+                     f"User {user_name} has {str(len(set(user_ip)))}"
+                    + f" active ips. {str(set(user_ip))}"
                 )
                 logger.warning(message)
                 await send_logs(str("<b>Warning: </b>" + message))
