@@ -598,6 +598,7 @@ application.add_handler(
         states={
             GET_CONFIRMATION: [MessageHandler(filters.TEXT, get_confirmation)],
             GET_DOMAIN: [MessageHandler(filters.TEXT, get_domain)],
+            GET_NOTIFY_POINT: [MessageHandler(filters.TEXT, get_notify_point)],
             GET_USERNAME: [MessageHandler(filters.TEXT, get_username)],
             GET_PASSWORD: [MessageHandler(filters.TEXT, get_password)],
         },
