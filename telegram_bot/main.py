@@ -348,7 +348,7 @@ async def get_password(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
             + f"Panel Address: <code>{context.user_data['domain']}</code>\n"
             + f"Username: <code>{context.user_data['username']}</code>\n"
             + f"Password: <code>{context.user_data['password']}</code>\n"
-            + f"NotifyPoint: <code>{context.user_data["notify_point"]}</code>\n"
+            + f"NotifyPoint: <code>{context.user_data['notify_point']}</code>\n"
             + "--------\n"
             + "Try again /create_config",
         )
