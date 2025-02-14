@@ -307,6 +307,43 @@ async def disable_user(panel_data: PanelType, username: UserType) -> None | Valu
     raise ValueError(message)
 
 
+async def send_notify_request(panel_data: PanelType, username: UserType) -> None:
+    """
+       Send notify to another service.
+
+       Args:
+           panel_data (PanelType): A PanelType object containing
+           the username, password, domain and notify_point for the panel API.
+           username (user): The username of the user to disable.
+       Returns:
+           None
+
+       Raises:
+           ValueError: If the function fails to disable the user on both the HTTP
+           and HTTPS endpoints.
+       """
+
+    if panel_data.panel_notify_point is not None or panel_data.panel_notify_point != "":
+        data = await read_config()
+        payload = {
+            'token_name': username.name,
+            'minutes': data["TIME_TO_ACTIVE_USERS"]
+        }
+
+        try:
+            async with httpx.AsyncClient(verify=False) as client:
+                response = await client.post(panel_data.panel_notify_point, data=payload, timeout=5)
+                response.raise_for_status()
+        except httpx.HTTPStatusError:
+            message = f"[{response.status_code}] {response.text}"
+            await send_logs(message)
+            logger.error(message)
+        except Exception as error:  # pylint: disable=broad-except
+            message = f"An unexpected error occurred: {error}"
+            await send_logs(message)
+            logger.error(message)
+
+
 async def get_nodes(panel_data: PanelType) -> list[NodeType] | ValueError:
     """
     Get the IDs of all nodes from the panel API.

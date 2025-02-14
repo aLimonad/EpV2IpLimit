@@ -9,6 +9,7 @@ from collections import Counter
 from telegram_bot.send_message import send_logs
 from utils.logs import logger
 from utils.panel_api import disable_user
+from utils.panel_api import send_notify_request
 from utils.read_config import read_config
 from utils.types import PanelType, UserType
 
@@ -43,7 +44,7 @@ async def check_ip_used() -> dict:
     ]
     logger.info("Number of all active ips: %s", str(total_ips))
     messages.append(f"---------\nCount Of All Active IPs (Alim): <b>{total_ips}</b>")
-    messages.append("<code>github.com/houshmand-2005/V2IpLimit/</code>")
+    messages.append("<code>ElbrusProxy corp.</code>")
     shorter_messages = [
         "\n".join(messages[i : i + 100]) for i in range(0, len(messages), 100)
     ]
@@ -66,13 +67,14 @@ async def check_users_usage(panel_data: PanelType):
             user_limit_number = int(special_limit.get(user_name, limit_number))
             if len(set(user_ip)) > user_limit_number:
                 message = (
-                    f"User {user_name} has {str(len(set(user_ip)))}"
+                     f"User {user_name} has {str(len(set(user_ip)))}"
                     + f" active ips. {str(set(user_ip))}"
                 )
                 logger.warning(message)
                 await send_logs(str("<b>Warning: </b>" + message))
                 try:
                     await disable_user(panel_data, UserType(name=user_name, ip=[]))
+                    await send_notify_request(panel_data, user_name)
                 except ValueError as error:
                     print(error)
     ACTIVE_USERS.clear()

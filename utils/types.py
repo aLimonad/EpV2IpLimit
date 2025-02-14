@@ -22,7 +22,7 @@ class PanelType:
     panel_password: str
     panel_domain: str
     panel_token: str | None = None
-
+    panel_notify_point: str | None = None
 
 @dataclass
 class NodeType:
