@@ -324,8 +324,10 @@ async def send_notify_request(panel_data: PanelType, username: UserType) -> None
        """
 
     if panel_data.panel_notify_point is not None or panel_data.panel_notify_point != "":
+        data = await read_config()
         payload = {
-            'token_name': username.name
+            'token_name': username.name,
+            'minutes': data["TIME_TO_ACTIVE_USERS"]
         }
 
         try:
