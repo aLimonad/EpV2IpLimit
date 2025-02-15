@@ -24,10 +24,10 @@ download_program() {
     local filename
 
     if [ "$architecture" == "x86_64" ]; then
-        url="https://github.com/aLimonad/EpV2IpLimit/releases/download/1.0.0/v2iplimit.bin"
+        url="https://github.com/aLimonad/EpV2IpLimit/releases/download/1.0.0/v2iplimit_amd64.bin"
         filename="v2iplimit_amd64.bin"
     elif [ "$architecture" == "aarch64" ]; then
-        url="https://github.com/aLimonad/EpV2IpLimit/releases/download/1.0.0/v2iplimit.bin"
+        url="https://github.com/aLimonad/EpV2IpLimit/releases/download/1.0.0/v2iplimit_amd64.bin"
         filename="v2iplimit_amd64.bin"
     else
         echo "Unsupported architecture: $architecture"
