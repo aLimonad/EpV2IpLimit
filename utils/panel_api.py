@@ -323,22 +323,6 @@ async def send_notify_request(panel_data: PanelType, username: UserType) -> None
         and HTTPS endpoints.
     """
 
-async def send_notify_request(panel_data: PanelType, username: UserType) -> None:
-    """
-    Send notify to another service.
-
-    Args:
-        panel_data (PanelType): A PanelType object containing
-        the username, password, domain and notify_point for the panel API.
-        username (user): The username of the user to disable.
-    Returns:
-        None
-
-    Raises:
-        ValueError: If the function fails to disable the user on both the HTTP
-        and HTTPS endpoints.
-    """
-
     try:
         if panel_data.panel_notify_point is not None and panel_data.panel_notify_point != "":
             data = await read_config()
