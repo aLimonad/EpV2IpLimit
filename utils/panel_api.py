@@ -309,45 +309,44 @@ async def disable_user(panel_data: PanelType, username: UserType) -> None | Valu
 
 async def send_notify_request(panel_data: PanelType, username: UserType) -> None:
     """
-       Send notify to another service.
+    Send notify to another service.
 
-       Args:
-           panel_data (PanelType): A PanelType object containing
-           the username, password, domain and notify_point for the panel API.
-           username (user): The username of the user to disable.
-       Returns:
-           None
+    Args:
+        panel_data (PanelType): A PanelType object containing
+        the username, password, domain and notify_point for the panel API.
+        username (user): The username of the user to disable.
+    Returns:
+        None
 
-       Raises:
-           ValueError: If the function fails to disable the user on both the HTTP
-           and HTTPS endpoints.
-       """
+    Raises:
+        ValueError: If the function fails to disable the user on both the HTTP
+        and HTTPS endpoints.
+    """
 
-		try:
-			if panel_data.panel_notify_point is not None and panel_data.panel_notify_point != "":
-				data = await read_config()
-				payload = {
-					'tokenName': username.name,
-					'seconds': data["TIME_TO_ACTIVE_USERS"]
-				}
+    try:
+        if panel_data.panel_notify_point is not None and panel_data.panel_notify_point != "":
+            data = await read_config()
+            payload = {
+                'tokenName': username.name,
+                'seconds': data["TIME_TO_ACTIVE_USERS"]
+            }
 
-				try:
-					async with httpx.AsyncClient(verify=False) as client:
-						response = await client.post(panel_data.panel_notify_point, json=payload, timeout=5)
-						response.raise_for_status()
-				except httpx.HTTPStatusError:
-					message = f"[{response.status_code}] {response.text}"
-					await send_logs(message)
-					logger.error(message)
-				except Exception as error:  # pylint: disable=broad-except
-					message = f"An unexpected error occurred: {error}"
-					await send_logs(message)
-					logger.error(message)
-		except Exception as error:
-			# Обработка любых других ошибок
-			message = f"An unexpected error occurred in send_notify_request: {error}"
-			logger.error(message)
-			
+            try:
+                async with httpx.AsyncClient(verify=False) as client:
+                    response = await client.post(panel_data.panel_notify_point, json=payload, timeout=5)
+                    response.raise_for_status()
+            except httpx.HTTPStatusError:
+                message = f"[{response.status_code}] {response.text}"
+                await send_logs(message)
+                logger.error(message)
+            except Exception as error:  # pylint: disable=broad-except
+                message = f"An unexpected error occurred: {error}"
+                await send_logs(message)
+                logger.error(message)
+    except Exception as error:
+        # Обработка любых других ошибок
+        message = f"An unexpected error occurred in send_notify_request: {error}"
+        logger.error(message)
 
 
 async def get_nodes(panel_data: PanelType) -> list[NodeType] | ValueError:
