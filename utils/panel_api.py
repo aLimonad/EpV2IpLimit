@@ -323,6 +323,22 @@ async def send_notify_request(panel_data: PanelType, username: UserType) -> None
         and HTTPS endpoints.
     """
 
+async def send_notify_request(panel_data: PanelType, username: UserType) -> None:
+    """
+    Send notify to another service.
+
+    Args:
+        panel_data (PanelType): A PanelType object containing
+        the username, password, domain and notify_point for the panel API.
+        username (user): The username of the user to disable.
+    Returns:
+        None
+
+    Raises:
+        ValueError: If the function fails to disable the user on both the HTTP
+        and HTTPS endpoints.
+    """
+
     try:
         if panel_data.panel_notify_point is not None and panel_data.panel_notify_point != "":
             data = await read_config()
@@ -339,7 +355,7 @@ async def send_notify_request(panel_data: PanelType, username: UserType) -> None
                         timeout=5
                     )
                     response.raise_for_status()
-            except httpx.HTTPStatusError as http_error:
+            except httpx.HTTPStatusError:  # Убрали неиспользуемую переменную http_error
                 message = f"[{response.status_code}] {response.text}"
                 await send_logs(message)
                 logger.error(message)
@@ -351,7 +367,7 @@ async def send_notify_request(panel_data: PanelType, username: UserType) -> None
                 message = f"An unexpected error occurred: {error}"
                 await send_logs(message)
                 logger.error(message)
-    except Exception as error:
+    except Exception as error:  # pylint: disable=broad-except
         # Обработка любых других ошибок
         message = f"An unexpected error occurred in send_notify_request: {error}"
         logger.error(message)
