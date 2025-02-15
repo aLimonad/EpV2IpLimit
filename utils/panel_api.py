@@ -333,10 +333,18 @@ async def send_notify_request(panel_data: PanelType, username: UserType) -> None
 
             try:
                 async with httpx.AsyncClient(verify=False) as client:
-                    response = await client.post(panel_data.panel_notify_point, json=payload, timeout=5)
+                    response = await client.post(
+                        panel_data.panel_notify_point,
+                        json=payload,
+                        timeout=5
+                    )
                     response.raise_for_status()
-            except httpx.HTTPStatusError:
+            except httpx.HTTPStatusError as http_error:
                 message = f"[{response.status_code}] {response.text}"
+                await send_logs(message)
+                logger.error(message)
+            except (httpx.NetworkError, httpx.TimeoutError) as network_error:
+                message = f"A network error occurred: {network_error}"
                 await send_logs(message)
                 logger.error(message)
             except Exception as error:  # pylint: disable=broad-except
@@ -347,7 +355,6 @@ async def send_notify_request(panel_data: PanelType, username: UserType) -> None
         # Обработка любых других ошибок
         message = f"An unexpected error occurred in send_notify_request: {error}"
         logger.error(message)
-
 
 async def get_nodes(panel_data: PanelType) -> list[NodeType] | ValueError:
     """
