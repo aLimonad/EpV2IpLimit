@@ -323,9 +323,8 @@ async def send_notify_request(panel_data: PanelType, username: UserType) -> None
         and HTTPS endpoints.
     """
 
-logger.info("Test log")
-
     try:
+	logger.info("Test log")
 	logger.info(username.name);
 	logger.info(data["TIME_TO_ACTIVE_USERS"]);
         if panel_data.panel_notify_point is not None and panel_data.panel_notify_point != "":
