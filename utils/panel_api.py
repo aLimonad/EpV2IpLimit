@@ -279,7 +279,7 @@ async def disable_user(panel_data: PanelType, username: UserType) -> None | Valu
                         url, json=status, headers=headers, timeout=5
                     )
                     response.raise_for_status()
-                message = f"Disabled user: {username.name}"
+                message = f"Disabled user (alim): {username.name}"
                 await send_logs(message)
                 logger.info(message)
                 dis_obj = DisabledUsers()
@@ -307,7 +307,7 @@ async def disable_user(panel_data: PanelType, username: UserType) -> None | Valu
     raise ValueError(message)
 
 
-async def send_notify_request(panel_data: PanelType, username: UserType) -> None:
+async def send_notify_request(panel_data: PanelType, username: UserType) -> None | ValueError:
     """
     Send notify to another service.
 

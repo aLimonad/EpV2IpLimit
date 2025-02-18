@@ -74,6 +74,7 @@ async def check_users_usage(panel_data: PanelType):
                 await send_logs(str("<b>Warning: </b>" + message))
                 try:
                     await disable_user(panel_data, UserType(name=user_name, ip=[]))
+					logger.warning("Await send notify")
                     await send_notify_request(panel_data, UserType(name=user_name, ip=[]))
                 except ValueError as error:
                     print(error)
