@@ -67,14 +67,14 @@ async def check_users_usage(panel_data: PanelType):
             user_limit_number = int(special_limit.get(user_name, limit_number))
             if len(set(user_ip)) > user_limit_number:
                 message = (
-                     f"User {user_name} has {str(len(set(user_ip)))}"
+                    f"User {user_name} has {str(len(set(user_ip)))}"
                     + f" active ips. {str(set(user_ip))}"
                 )
                 logger.warning(message)
                 await send_logs(str("<b>Warning: </b>" + message))
                 try:
                     await disable_user(panel_data, UserType(name=user_name, ip=[]))
-					logger.warning("Await send notify")
+                    logger.warning("Await send notify")
                     await send_notify_request(panel_data, UserType(name=user_name, ip=[]))
                 except ValueError as error:
                     print(error)
