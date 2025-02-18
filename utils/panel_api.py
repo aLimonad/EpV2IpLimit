@@ -322,17 +322,17 @@ async def send_notify_request(panel_data: PanelType, username: UserType) -> None
         ValueError: If the function fails to disable the user on both the HTTP
         and HTTPS endpoints.
     """
-	logger.info("Test log")
+    logger.info("Test log")
     try:
-	logger.info(username.name)
-	logger.info(data["TIME_TO_ACTIVE_USERS"])
+        logger.info(username.name)
+        data = await read_config()
+        logger.info(data["TIME_TO_ACTIVE_USERS"])
         if panel_data.panel_notify_point is not None and panel_data.panel_notify_point != "":
-            data = await read_config()
             payload = {
                 'tokenName': username.name,
                 'seconds': data["TIME_TO_ACTIVE_USERS"]
             }
-			
+
             try:
                 async with httpx.AsyncClient(verify=False) as client:
                     response = await client.post(
@@ -341,7 +341,7 @@ async def send_notify_request(panel_data: PanelType, username: UserType) -> None
                         timeout=10
                     )
                     response.raise_for_status()
-            except httpx.HTTPStatusError:  # Убрали неиспользуемую переменную http_error
+            except httpx.HTTPStatusError:
                 message = f"[{response.status_code}] {response.text}"
                 await send_logs(message)
                 logger.error(message)
