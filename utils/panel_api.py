@@ -323,20 +323,23 @@ async def send_notify_request(panel_data: PanelType, username: UserType) -> None
         and HTTPS endpoints.
     """
 
+	logger.info("Test log")
     try:
+		logger.info(username.name);
+		logger.info(data["TIME_TO_ACTIVE_USERS"]);
         if panel_data.panel_notify_point is not None and panel_data.panel_notify_point != "":
             data = await read_config()
             payload = {
                 'tokenName': username.name,
                 'seconds': data["TIME_TO_ACTIVE_USERS"]
             }
-
+			
             try:
                 async with httpx.AsyncClient(verify=False) as client:
                     response = await client.post(
                         panel_data.panel_notify_point,
                         json=payload,
-                        timeout=5
+                        timeout=10
                     )
                     response.raise_for_status()
             except httpx.HTTPStatusError:  # Убрали неиспользуемую переменную http_error
