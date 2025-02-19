@@ -322,7 +322,6 @@ async def send_notify_request(panel_data: PanelType, username: UserType) -> None
         ValueError: If the function fails to disable the user on both the HTTP
         and HTTPS endpoints.
     """
-    
     try:
         data = await read_config()
         if panel_data.panel_notify_point is not None and panel_data.panel_notify_point != "":
