@@ -279,7 +279,7 @@ async def disable_user(panel_data: PanelType, username: UserType) -> None | Valu
                         url, json=status, headers=headers, timeout=5
                     )
                     response.raise_for_status()
-                message = f"Disabled user (alim): {username.name}"
+                message = f"Disabled user: {username.name}"
                 await send_logs(message)
                 logger.info(message)
                 dis_obj = DisabledUsers()
@@ -322,11 +322,9 @@ async def send_notify_request(panel_data: PanelType, username: UserType) -> None
         ValueError: If the function fails to disable the user on both the HTTP
         and HTTPS endpoints.
     """
-    logger.info("Test log")
+    
     try:
-        logger.info(username.name)
         data = await read_config()
-        logger.info(data["TIME_TO_ACTIVE_USERS"])
         if panel_data.panel_notify_point is not None and panel_data.panel_notify_point != "":
             payload = {
                 'tokenName': username.name,

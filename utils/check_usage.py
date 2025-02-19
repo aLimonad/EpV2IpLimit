@@ -36,20 +36,20 @@ async def check_ip_used() -> dict:
             reverse=True,
         )
     )
-    messages = [
-        f"<code>{email}</code> with <code>{len(ips)}</code> active ip  \n- "
-        + "\n- ".join(ips)
-        for email, ips in all_users_log.items()
-        if ips
-    ]
-    logger.info("Number of all active ips: %s", str(total_ips))
-    messages.append(f"---------\nCount Of All Active IPs (Alim): <b>{total_ips}</b>")
-    messages.append("<code>ElbrusProxy corp.</code>")
-    shorter_messages = [
-        "\n".join(messages[i : i + 100]) for i in range(0, len(messages), 100)
-    ]
-    for message in shorter_messages:
-        await send_logs(message)
+    # messages = [
+        # f"<code>{email}</code> with <code>{len(ips)}</code> active ip  \n- "
+        # + "\n- ".join(ips)
+        # for email, ips in all_users_log.items()
+        # if ips
+    # ]
+    # logger.info("Number of all active ips: %s", str(total_ips))
+    # messages.append(f"---------\nCount Of All Active IPs: <b>{total_ips}</b>")
+    # messages.append("<code>ElbrusProxy corp.</code>")
+    # shorter_messages = [
+        # "\n".join(messages[i : i + 100]) for i in range(0, len(messages), 100)
+    # ]
+    # for message in shorter_messages:
+        # await send_logs(message)
     return all_users_log
 
 
@@ -74,7 +74,6 @@ async def check_users_usage(panel_data: PanelType):
                 await send_logs(str("<b>Warning: </b>" + message))
                 try:
                     await disable_user(panel_data, UserType(name=user_name, ip=[]))
-                    logger.warning("Await send notify")
                     await send_notify_request(panel_data, UserType(name=user_name, ip=[]))
                 except ValueError as error:
                     print(error)
