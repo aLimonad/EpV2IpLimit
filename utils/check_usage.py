@@ -15,11 +15,16 @@ from utils.types import PanelType, UserType
 
 ACTIVE_USERS: dict[str, UserType] | dict = {}
 
+# Глобальный счётчик для отслеживания вызовов
+call_counter = 0
+
 async def check_ip_used() -> dict:
     """
     This function checks if a user (name and IP address)
     appears more than two times in the ACTIVE_USERS list.
     """
+    global call_counter
+
     all_users_log = {}
     for email in list(ACTIVE_USERS.keys()):
         data = ACTIVE_USERS[email]
@@ -42,7 +47,11 @@ async def check_ip_used() -> dict:
         "PANEL_ENABLE_STATISTIC", 0
     )  # По умолчанию 0, если ключ отсутствует
 
-    if enable_statistic == 1:
+    # Увеличиваем счётчик при каждом вызове
+    call_counter += 1
+
+    # Проверяем, если enable_statistic == 1 и счётчик достиг 20
+    if enable_statistic == 1 and call_counter % 20 == 0:
         messages = [
             f"<code>{email}</code> with <code>{len(ips)}</code> active ip  \n- "
             + "\n- ".join(ips)
