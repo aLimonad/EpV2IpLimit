@@ -16,6 +16,8 @@ class PanelType:
         panel_password (str): The password for the panel.
         panel_domain (str): The domain for the panel.
         panel_token (Optional[str]): The token for the panel. None if no token is provided.
+        panel_notify_point (Optional[str]): The address to send notifications. None if not provided.
+        panel_enable_statistic (Optional[int]): Enable sending statistics. None if not provided.
     """
 
     panel_username: str
@@ -23,6 +25,7 @@ class PanelType:
     panel_domain: str
     panel_token: str | None = None
     panel_notify_point: str | None = None
+    panel_enable_statistic: int = 0
 
 @dataclass
 class NodeType:

@@ -38,7 +38,9 @@ async def check_ip_used() -> dict:
     )
 
     config_data = await read_config()
-    enable_statistic = config_data.get("PANEL_ENABLE_STATISTIC", 0)  # По умолчанию 0, если ключ отсутствует
+    enable_statistic = config_data.get(
+        "PANEL_ENABLE_STATISTIC", 0
+    )  # По умолчанию 0, если ключ отсутствует
 
     if enable_statistic == 1:
         messages = [

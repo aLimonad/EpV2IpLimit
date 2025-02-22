@@ -250,6 +250,7 @@ async def create_config(update: Update, _context: ContextTypes.DEFAULT_TYPE):
         username = json_data.get("PANEL_USERNAME")
         password = json_data.get("PANEL_PASSWORD")
         notify_point = json_data.get("PANEL_NOTIFY_POINT")
+		enable_statistic = json_data.get("PANEL_ENABLE_STATISTIC")
         if domain and username and password:
             await update.message.reply_html(text="You set configuration before!")
             await update.message.reply_html(
@@ -262,6 +263,7 @@ async def create_config(update: Update, _context: ContextTypes.DEFAULT_TYPE):
                 + f"Username: <code>{username}</code>\n"
                 + f"Password: <code>{password}</code>\n"
                 + f"NotifyPoint: <code>{notify_point}</code>\n"
+				+ f"EnableStatistic: <code>{enable_statistic}</code>\n"
                 + "Do you want to change these settings? <code>(yes/no)</code>"
             )
             return GET_CONFIRMATION
@@ -303,7 +305,7 @@ async def get_domain(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return GET_NOTIFY_POINT
 
 async def get_notify_point(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Get notify point"""
+    """Get notify point."""
 
     if update.message.text is not None or update.message.text != "":
         context.user_data["notify_point"] = update.message.text.strip()
