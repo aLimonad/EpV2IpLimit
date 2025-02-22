@@ -15,7 +15,6 @@ from utils.types import PanelType, UserType
 
 ACTIVE_USERS: dict[str, UserType] | dict = {}
 
-
 async def check_ip_used() -> dict:
     """
     This function checks if a user (name and IP address)
@@ -38,6 +37,7 @@ async def check_ip_used() -> dict:
         )
     )
 
+    config_data = await read_config()
     enable_statistic = config_data.get("PANEL_ENABLE_STATISTIC", 0)  # По умолчанию 0, если ключ отсутствует
 
     if enable_statistic == 1:
@@ -57,7 +57,6 @@ async def check_ip_used() -> dict:
             await send_logs(message)
 
     return all_users_log
-
 
 async def check_users_usage(panel_data: PanelType):
     """
