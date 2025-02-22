@@ -28,7 +28,7 @@ async def check_ip_used() -> dict:
         all_users_log[email] = data.ip
         logger.info(data)
 
-    # total_ips = sum(len(ips) for ips in all_users_log.values())
+    total_ips = sum(len(ips) for ips in all_users_log.values())
     all_users_log = dict(
         sorted(
             all_users_log.items(),
