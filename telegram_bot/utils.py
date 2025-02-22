@@ -149,7 +149,13 @@ async def remove_admin_from_config(admin_id: int) -> bool:
     return False
 
 
-async def add_base_information(domain: str, password: str, username: str, notifypoint: str= None,):
+async def add_base_information(
+    domain: str, 
+    password: str, 
+    username: str, 
+    notifypoint: str = None, 
+    enablestatistic: int = None,
+) -> None:
     """
     Adds base information including domain, password, and username.
 
@@ -158,6 +164,7 @@ async def add_base_information(domain: str, password: str, username: str, notify
         password (str): The password for the panel.
         username (str): The username for the panel.
         notifypoint (str): The address to send notify.
+        enablestatistic (int): Enable sending statistic.
 
     Returns:
         None
@@ -174,7 +181,8 @@ async def add_base_information(domain: str, password: str, username: str, notify
             "PANEL_DOMAIN": domain,
             "PANEL_USERNAME": username,
             "PANEL_PASSWORD": password,
-            "PANEL_NOTIFY_POINT": notifypoint
+            "PANEL_NOTIFY_POINT": notifypoint,
+            "PANEL_ENABLE_STATISTIC": enablestatistic,
         }
     )
     await write_json_file(data)

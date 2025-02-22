@@ -59,8 +59,9 @@ from utils.read_config import read_config
     GET_GENERAL_LIMIT_NUMBER,
     GET_CHECK_INTERVAL,
     GET_TIME_TO_ACTIVE_USERS,
-    GET_NOTIFY_POINT
-) = range(16)
+    GET_NOTIFY_POINT,
+	GET_ENABLE_STATISTIC
+) = range(17)
 
 data = asyncio.run(read_config())
 try:
@@ -309,6 +310,18 @@ async def get_notify_point(update: Update, context: ContextTypes.DEFAULT_TYPE) -
 
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
+        text="Send enable send statistic: (1 - enable, 0 - disable)",
+    )
+    return GET_ENABLE_STATISTIC
+	
+async def get_enable_statistic(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Get enable statiscic"""
+
+    if update.message.text is not None or update.message.text != "":
+        context.user_data["enable_statistic"] = update.message.text.strip()
+
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
         text="Send Your Username: (For example: 'admin')",
     )
     return GET_USERNAME
@@ -336,6 +349,7 @@ async def get_password(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
             context.user_data["password"],
             context.user_data["username"],
             context.user_data["notify_point"],
+			context.user_data["enable_statistic"],
         )
         await context.bot.send_message(
             chat_id=update.effective_chat.id, text="Config saved successfully 🎊"
@@ -349,6 +363,7 @@ async def get_password(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
             + f"Username: <code>{context.user_data['username']}</code>\n"
             + f"Password: <code>{context.user_data['password']}</code>\n"
             + f"NotifyPoint: <code>{context.user_data['notify_point']}</code>\n"
+			+ f"EnableStatistic: <code>{context.user_data['enable_statistic']}</code>\n"
             + "--------\n"
             + "Try again /create_config",
         )
@@ -599,6 +614,7 @@ application.add_handler(
             GET_CONFIRMATION: [MessageHandler(filters.TEXT, get_confirmation)],
             GET_DOMAIN: [MessageHandler(filters.TEXT, get_domain)],
             GET_NOTIFY_POINT: [MessageHandler(filters.TEXT, get_notify_point)],
+			GET_ENABLE_STATISTIC: [MessageHandler(filters.TEXT, get_enable_statistic)],
             GET_USERNAME: [MessageHandler(filters.TEXT, get_username)],
             GET_PASSWORD: [MessageHandler(filters.TEXT, get_password)],
         },

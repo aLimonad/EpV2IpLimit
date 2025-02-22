@@ -28,6 +28,7 @@ async def check_ip_used() -> dict:
         data.ip = list({ip for ip in data.ip if ip_counts[ip] > 2})
         all_users_log[email] = data.ip
         logger.info(data)
+
     # total_ips = sum(len(ips) for ips in all_users_log.values())
     all_users_log = dict(
         sorted(
@@ -36,20 +37,25 @@ async def check_ip_used() -> dict:
             reverse=True,
         )
     )
-    # messages = [
-        # f"<code>{email}</code> with <code>{len(ips)}</code> active ip  \n- "
-        # + "\n- ".join(ips)
-        # for email, ips in all_users_log.items()
-        # if ips
-    # ]
-    # logger.info("Number of all active ips: %s", str(total_ips))
-    # messages.append(f"---------\nCount Of All Active IPs: <b>{total_ips}</b>")
-    # messages.append("<code>ElbrusProxy corp.</code>")
-    # shorter_messages = [
-        # "\n".join(messages[i : i + 100]) for i in range(0, len(messages), 100)
-    # ]
-    # for message in shorter_messages:
-        # await send_logs(message)
+
+    enable_statistic = config_data.get("PANEL_ENABLE_STATISTIC", 0)  # По умолчанию 0, если ключ отсутствует
+
+    if enable_statistic == 1:
+        messages = [
+            f"<code>{email}</code> with <code>{len(ips)}</code> active ip  \n- "
+            + "\n- ".join(ips)
+            for email, ips in all_users_log.items()
+            if ips
+        ]
+        logger.info("Number of all active ips: %s", str(total_ips))
+        messages.append(f"---------\nCount Of All Active IPs: <b>{total_ips}</b>")
+        messages.append("<code>ElbrusProxy corp.</code>")
+        shorter_messages = [
+            "\n".join(messages[i : i + 100]) for i in range(0, len(messages), 100)
+        ]
+        for message in shorter_messages:
+            await send_logs(message)
+
     return all_users_log
 
 
