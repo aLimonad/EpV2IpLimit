@@ -150,10 +150,10 @@ async def remove_admin_from_config(admin_id: int) -> bool:
 
 
 async def add_base_information(
-    domain: str, 
-    password: str, 
-    username: str, 
-    notifypoint: str = None, 
+    domain: str,
+    password: str,
+    username: str,
+    notifypoint: str = None,
     enablestatistic: int = None,
 ) -> None:
     """
@@ -170,7 +170,11 @@ async def add_base_information(
         None
     """
     await get_token(
-        PanelType(panel_domain=domain, panel_password=password, panel_username=username)
+        PanelType(
+            panel_domain=domain,
+            panel_password=password,
+            panel_username=username,
+        )
     )
     if os.path.exists("config.json"):
         data = await read_json_file()
