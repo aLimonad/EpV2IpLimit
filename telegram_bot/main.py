@@ -315,7 +315,7 @@ async def get_notify_point(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         text="Send enable send statistic: (1 - enable, 0 - disable)",
     )
     return GET_ENABLE_STATISTIC
-	
+
 async def get_enable_statistic(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Get enable statiscic"""
 
