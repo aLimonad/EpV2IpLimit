@@ -361,14 +361,14 @@ async def get_password(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         text="Please wait to check panel address, username and password...",
     )
     try:
-        await add_base_information(
-            context.user_data["domain"],
-            context.user_data["password"],
-            context.user_data["username"],
-            context.user_data["notify_point"],
-			context.user_data["enable_statistic"],
-            context.user_data["missed_count"],
-        )
+        await add_base_information({
+            "domain": context.user_data["domain"],
+            "password": context.user_data["password"],
+            "username": context.user_data["username"],
+            "notify_point": context.user_data["notify_point"],
+            "enable_statistic": context.user_data["enable_statistic"],
+            "missed_count": context.user_data["missed_count"],
+        })
         await context.bot.send_message(
             chat_id=update.effective_chat.id, text="Config saved successfully 🎊"
         )

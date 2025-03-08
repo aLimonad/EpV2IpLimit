@@ -149,14 +149,13 @@ async def remove_admin_from_config(admin_id: int) -> bool:
     return False
 
 
-async def add_base_information(
-    domain: str,
-    password: str,
-    username: str,
-    notifypoint: str = None,
-    enablestatistic: int = None,
-    missedcount: int = None,
-) -> None:
+async def add_base_information(data: dict) -> None:
+    domain = data.get("domain")
+    password = data.get("password")
+    username = data.get("username")
+    notifypoint = data.get("notify_point")
+    enablestatistic = data.get("enable_statistic")
+    missedcount = data.get("missed_count")
     """
     Adds base information including domain, password, and username.
 
