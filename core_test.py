@@ -109,7 +109,7 @@ async def main():  # pylint: disable=too-many-statements
     print("Telegram Bot running...")
     await add_fake_users()
     print("Print All Active Users Before 'check_ip_used' Test: ", ACTIVE_USERS)
-    await check_ip_used()
+    await check_ip_used(0)
     print("Print All Active Users After 'check_ip_used' Test: ", ACTIVE_USERS)
     print("Parser Test: ", await parse_logs(LOGS))
     print("Check Ip Test: ", await check_ip("2a01:5ec0:5011:9962:d8ed:c723:c32:ac2a"))

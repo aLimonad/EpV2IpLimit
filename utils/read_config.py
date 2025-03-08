@@ -51,6 +51,7 @@ async def read_config(
             "TIME_TO_ACTIVE_USERS",
             "IP_LOCATION",
             "GENERAL_LIMIT",
+            "MISSED_COUNT"
         ]
         for element in required_elements:
             if element not in CONFIG_DATA:

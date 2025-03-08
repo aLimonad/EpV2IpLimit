@@ -18,12 +18,11 @@ ACTIVE_USERS: dict[str, UserType] | dict = {}
 # Глобальный счётчик для отслеживания вызовов
 CALL_COUNTER = 0
 
-async def check_ip_used() -> dict:
+async def check_ip_used(call_counter: int) -> dict:
     """
     This function checks if a user (name and IP address)
     appears more than two times in the ACTIVE_USERS list.
     """
-    global CALL_COUNTER
 
     all_users_log = {}
     for email in list(ACTIVE_USERS.keys()):
@@ -47,11 +46,15 @@ async def check_ip_used() -> dict:
         "PANEL_ENABLE_STATISTIC", 0
     )  # По умолчанию 0, если ключ отсутствует
 
+    missed_count = config_data.get(
+        "MISSED_COUNT", 10
+    )  # По умолчанию 10, если ключ отсутствует
+
     # Увеличиваем счётчик при каждом вызове
     CALL_COUNTER += 1
 
     # Проверяем, если enable_statistic == 1 и счётчик достиг 20
-    if enable_statistic == 1 and CALL_COUNTER % 20 == 0:
+    if enable_statistic == 1 and CALL_COUNTER % missed_count == 0:
         messages = [
             f"<code>{email}</code> with <code>{len(ips)}</code> active ip  \n- "
             + "\n- ".join(ips)
@@ -74,7 +77,7 @@ async def check_users_usage(panel_data: PanelType):
     checks the usage of active users
     """
     config_data = await read_config()
-    all_users_log = await check_ip_used()
+    all_users_log = await check_ip_used(CALL_COUNTER)
     except_users = config_data.get("EXCEPT_USERS", [])
     special_limit = config_data.get("SPECIAL_LIMIT", {})
     limit_number = config_data["GENERAL_LIMIT"]
