@@ -51,10 +51,10 @@ async def check_ip_used(call_counter: int) -> dict:
     )  # По умолчанию 10, если ключ отсутствует
 
     # Увеличиваем счётчик при каждом вызове
-    CALL_COUNTER += 1
+    call_counter += 1
 
     # Проверяем, если enable_statistic == 1 и счётчик достиг 20
-    if enable_statistic == 1 and CALL_COUNTER % missed_count == 0:
+    if enable_statistic == 1 and call_counter % missed_count == 0:
         messages = [
             f"<code>{email}</code> with <code>{len(ips)}</code> active ip  \n- "
             + "\n- ".join(ips)
