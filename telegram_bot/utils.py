@@ -7,9 +7,8 @@ import json
 import os
 import sys
 
-from utils.types import PanelType
-
 from typing import Dict, Any
+from utils.types import PanelType
 
 try:
     import httpx
