@@ -47,14 +47,14 @@ async def check_ip_used(call_counter: int) -> dict:
     )  # По умолчанию 0, если ключ отсутствует
 
     missed_count = config_data.get(
-        "MISSED_COUNT", 10
-    )  # По умолчанию 10, если ключ отсутствует
+        "PANEL_MISSED_COUNT", 0
+    )  # По умолчанию 0, если ключ отсутствует
 
     # Увеличиваем счётчик при каждом вызове
     call_counter += 1
 
     # Проверяем, если enable_statistic == 1 и счётчик достиг 20
-    if enable_statistic == 1 and call_counter % missed_count == 0:
+    if enable_statistic == 1 and (missed_count == 0 or call_counter % missed_count == 0):
         messages = [
             f"<code>{email}</code> with <code>{len(ips)}</code> active ip  \n- "
             + "\n- ".join(ips)

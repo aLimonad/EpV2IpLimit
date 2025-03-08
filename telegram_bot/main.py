@@ -60,7 +60,8 @@ from utils.read_config import read_config
     GET_CHECK_INTERVAL,
     GET_TIME_TO_ACTIVE_USERS,
     GET_NOTIFY_POINT,
-	GET_ENABLE_STATISTIC
+	GET_ENABLE_STATISTIC,
+    GET_MISSED_COUNT
 ) = range(17)
 
 data = asyncio.run(read_config())
@@ -251,6 +252,7 @@ async def create_config(update: Update, _context: ContextTypes.DEFAULT_TYPE):
         password = json_data.get("PANEL_PASSWORD")
         notify_point = json_data.get("PANEL_NOTIFY_POINT")
         enable_statistic = json_data.get("PANEL_ENABLE_STATISTIC")
+        missed_count = json_data.get("PANEL_MISSED_COUNT")
         if domain and username and password:
             await update.message.reply_html(text="You set configuration before!")
             await update.message.reply_html(
@@ -264,6 +266,7 @@ async def create_config(update: Update, _context: ContextTypes.DEFAULT_TYPE):
                 + f"Password: <code>{password}</code>\n"
                 + f"NotifyPoint: <code>{notify_point}</code>\n"
 				+ f"EnableStatistic: <code>{enable_statistic}</code>\n"
+                + f"MissedCount: <code>{missed_count}</code>\n"
                 + "Do you want to change these settings? <code>(yes/no)</code>"
             )
             return GET_CONFIRMATION
@@ -326,6 +329,18 @@ async def get_enable_statistic(update: Update, context: ContextTypes.DEFAULT_TYP
         chat_id=update.effective_chat.id,
         text="Send Your Username: (For example: 'admin')",
     )
+    return GET_MISSED_COUNT
+
+async def get_missed_count(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Get missed count"""
+
+    if update.message.text is not None or update.message.text != "":
+        context.user_data["missed_count"] = update.message.text.strip()
+
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text="Send Missed Count: (Set to 0 to send all statistic messages)",
+    )
     return GET_USERNAME
 
 async def get_username(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
@@ -352,6 +367,7 @@ async def get_password(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
             context.user_data["username"],
             context.user_data["notify_point"],
 			context.user_data["enable_statistic"],
+            context.user_data["missed_count"],
         )
         await context.bot.send_message(
             chat_id=update.effective_chat.id, text="Config saved successfully 🎊"
@@ -366,6 +382,7 @@ async def get_password(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
             + f"Password: <code>{context.user_data['password']}</code>\n"
             + f"NotifyPoint: <code>{context.user_data['notify_point']}</code>\n"
 			+ f"EnableStatistic: <code>{context.user_data['enable_statistic']}</code>\n"
+            + f"MissedCount: <code>{context.user_data['missed_count']}</code>\n"
             + "--------\n"
             + "Try again /create_config",
         )
@@ -617,6 +634,7 @@ application.add_handler(
             GET_DOMAIN: [MessageHandler(filters.TEXT, get_domain)],
             GET_NOTIFY_POINT: [MessageHandler(filters.TEXT, get_notify_point)],
 			GET_ENABLE_STATISTIC: [MessageHandler(filters.TEXT, get_enable_statistic)],
+            GET_MISSED_COUNT: [MessageHandler(filters.TEXT, get_missed_count)],
             GET_USERNAME: [MessageHandler(filters.TEXT, get_username)],
             GET_PASSWORD: [MessageHandler(filters.TEXT, get_password)],
         },

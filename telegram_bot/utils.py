@@ -155,6 +155,7 @@ async def add_base_information(
     username: str,
     notifypoint: str = None,
     enablestatistic: int = None,
+    missingcount: int = None,
 ) -> None:
     """
     Adds base information including domain, password, and username.
@@ -187,6 +188,7 @@ async def add_base_information(
             "PANEL_PASSWORD": password,
             "PANEL_NOTIFY_POINT": notifypoint,
             "PANEL_ENABLE_STATISTIC": enablestatistic,
+            "PANEL_MISSED_COUNT": missedcount
         }
     )
     await write_json_file(data)
