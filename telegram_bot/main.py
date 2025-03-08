@@ -250,7 +250,7 @@ async def create_config(update: Update, _context: ContextTypes.DEFAULT_TYPE):
         username = json_data.get("PANEL_USERNAME")
         password = json_data.get("PANEL_PASSWORD")
         notify_point = json_data.get("PANEL_NOTIFY_POINT")
-		enable_statistic = json_data.get("PANEL_ENABLE_STATISTIC")
+        enable_statistic = json_data.get("PANEL_ENABLE_STATISTIC")
         if domain and username and password:
             await update.message.reply_html(text="You set configuration before!")
             await update.message.reply_html(
