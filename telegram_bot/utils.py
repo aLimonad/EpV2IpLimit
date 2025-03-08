@@ -149,27 +149,31 @@ async def remove_admin_from_config(admin_id: int) -> bool:
     return False
 
 
-async def add_base_information(data: dict) -> None:
+async def add_base_information(data: Dict[str, Any]) -> None:
+    """
+    Adds base information including domain, password, and username.
+
+    Args:
+        data (Dict[str, Any]): A dictionary containing the following keys:
+            - domain (str): The domain for the panel.
+            - password (str): The password for the panel.
+            - username (str): The username for the panel.
+            - notify_point (str): The address to send notifications.
+            - enable_statistic (int): Flag to enable sending statistics.
+            - missed_count (int): Missed count to send statistics.
+
+    Returns:
+        None
+    """
+    # Извлечение данных из словаря
     domain = data.get("domain")
     password = data.get("password")
     username = data.get("username")
     notifypoint = data.get("notify_point")
     enablestatistic = data.get("enable_statistic")
     missedcount = data.get("missed_count")
-    """
-    Adds base information including domain, password, and username.
 
-    Args:
-        domain (str): The domain for the panel.
-        password (str): The password for the panel.
-        username (str): The username for the panel.
-        notifypoint (str): The address to send notify.
-        enablestatistic (int): Enable sending statistic.
-        missedcount (int): Missed count to send statistic.
-
-    Returns:
-        None
-    """
+    # Получение токена
     await get_token(
         PanelType(
             panel_domain=domain,
@@ -177,21 +181,26 @@ async def add_base_information(data: dict) -> None:
             panel_username=username,
         )
     )
+
+    # Обновление или создание конфигурационного файла
     if os.path.exists("config.json"):
-        data = await read_json_file()
+        config_data = await read_json_file()
     else:
-        data = {}
-    data.update(
+        config_data = {}
+
+    config_data.update(
         {
             "PANEL_DOMAIN": domain,
             "PANEL_USERNAME": username,
             "PANEL_PASSWORD": password,
             "PANEL_NOTIFY_POINT": notifypoint,
             "PANEL_ENABLE_STATISTIC": enablestatistic,
-            "PANEL_MISSED_COUNT": missedcount
+            "PANEL_MISSED_COUNT": missedcount,
         }
     )
-    await write_json_file(data)
+
+    # Сохранение обновлённых данных в файл
+    await write_json_file(config_data)
 
 
 async def get_special_limit_list() -> list | None:
