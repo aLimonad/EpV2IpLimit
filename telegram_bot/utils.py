@@ -155,7 +155,7 @@ async def add_base_information(
     username: str,
     notifypoint: str = None,
     enablestatistic: int = None,
-    missingcount: int = None,
+    missedcount: int = None,
 ) -> None:
     """
     Adds base information including domain, password, and username.
@@ -166,6 +166,7 @@ async def add_base_information(
         username (str): The username for the panel.
         notifypoint (str): The address to send notify.
         enablestatistic (int): Enable sending statistic.
+        missedcount (int): Missed count to send statistic.
 
     Returns:
         None
