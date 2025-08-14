@@ -180,6 +180,9 @@ async def add_base_information(data: Dict[str, Any]) -> None:
             panel_domain=domain,
             panel_password=password,
             panel_username=username,
+            panel_notify_point=notifypoint,
+            panel_enable_statistic= enablestatistic,
+            panel_missed_count=missedcount
         )
     )
 

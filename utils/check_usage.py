@@ -55,14 +55,9 @@ async def check_ip_used(call_counter: int) -> dict:
 
     # Проверяем, если enable_statistic == 1 и счётчик достиг 20
     if enable_statistic == 1 and (missed_count == 0 or call_counter % missed_count == 0):
-        messages = [
-            f"<code>{email}</code> with <code>{len(ips)}</code> active ip  \n- "
-            + "\n- ".join(ips)
-            for email, ips in all_users_log.items()
-            if ips
-        ]
+        messages = []
         logger.info("Number of all active ips: %s", str(total_ips))
-        messages.append(f"---------\nCount Of All Active IPs: <b>{total_ips}</b>")
+        messages.append(f"Count Of All Active IPs: <b>{total_ips}</b>")
         messages.append("<code>ElbrusProxy corp.</code>")
         shorter_messages = [
             "\n".join(messages[i : i + 100]) for i in range(0, len(messages), 100)
