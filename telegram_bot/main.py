@@ -62,7 +62,7 @@ from utils.read_config import read_config
     GET_NOTIFY_POINT,
 	GET_ENABLE_STATISTIC,
     GET_MISSED_COUNT
-) = range(17)
+) = range(18)
 
 data = asyncio.run(read_config())
 try:
