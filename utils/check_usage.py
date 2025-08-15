@@ -23,6 +23,7 @@ async def check_ip_used() -> dict:
     This function checks if a user (name and IP address)
     appears more than two times in the ACTIVE_USERS list.
     """
+    # pylint: disable=global-statement
     global CALL_COUNTER
 
     all_users_log = {}
