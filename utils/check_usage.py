@@ -18,11 +18,12 @@ ACTIVE_USERS: dict[str, UserType] | dict = {}
 # Глобальный счётчик для отслеживания вызовов
 CALL_COUNTER = 0
 
-async def check_ip_used(call_counter: int) -> dict:
+async def check_ip_used() -> dict:
     """
     This function checks if a user (name and IP address)
     appears more than two times in the ACTIVE_USERS list.
     """
+    global CALL_COUNTER
 
     all_users_log = {}
     for email in list(ACTIVE_USERS.keys()):
@@ -51,19 +52,16 @@ async def check_ip_used(call_counter: int) -> dict:
     )  # По умолчанию 0, если ключ отсутствует
 
     # Увеличиваем счётчик при каждом вызове
-    call_counter += 1
+    CALL_COUNTER += 1
 
     # Проверяем, если enable_statistic == 1 и счётчик достиг 20
-    if enable_statistic == 1 and (missed_count == 0 or call_counter % missed_count == 0):
+    if enable_statistic == 1 and (missed_count == 0 or CALL_COUNTER % missed_count == 0):
         messages = []
         logger.info("Number of all active ips: %s", str(total_ips))
         messages.append(f"Count Of All Active IPs: <b>{total_ips}</b>")
         messages.append("<code>ElbrusProxy corp.</code>")
-        shorter_messages = [
-            "\n".join(messages[i : i + 100]) for i in range(0, len(messages), 100)
-        ]
-        for message in shorter_messages:
-            await send_logs(message)
+
+        await send_logs(messages)
 
     return all_users_log
 
@@ -72,7 +70,7 @@ async def check_users_usage(panel_data: PanelType):
     checks the usage of active users
     """
     config_data = await read_config()
-    all_users_log = await check_ip_used(CALL_COUNTER)
+    all_users_log = await check_ip_used()
     except_users = config_data.get("EXCEPT_USERS", [])
     special_limit = config_data.get("SPECIAL_LIMIT", {})
     limit_number = config_data["GENERAL_LIMIT"]
